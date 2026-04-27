@@ -119,9 +119,12 @@ export default function App() {
       <StatusBar style="dark" />
       <View style={styles.appShell}>
         <View style={styles.header}>
-          <View>
-            <Text style={styles.brand}>SabiTeach</Text>
-            <Text style={styles.subbrand}>Offline teacher copilot for low-connectivity classrooms</Text>
+          <View style={styles.brandRow}>
+            <BrandMark />
+            <View>
+              <Text style={styles.brand}>SabiTeach</Text>
+              <Text style={styles.subbrand}>Teach English with local-language support</Text>
+            </View>
           </View>
           <View style={styles.badge}>
             <Text style={styles.badgeText}>Primary 5 English + Efik</Text>
@@ -462,6 +465,17 @@ function Pill(props: { label: string }) {
   );
 }
 
+function BrandMark() {
+  return (
+    <View style={styles.brandMark}>
+      <View style={[styles.brandCell, styles.brandCellDark]} />
+      <View style={[styles.brandCell, styles.brandCellGold]} />
+      <View style={[styles.brandCell, styles.brandCellMint]} />
+      <View style={[styles.brandCell, styles.brandCellPaper]} />
+    </View>
+  );
+}
+
 function TabButton(props: {
   label: string;
   isActive: boolean;
@@ -497,16 +511,50 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f4ea",
     gap: 8
   },
+  brandRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12
+  },
   brand: {
     fontSize: 30,
     fontWeight: "800",
     color: "#183d33"
   },
   subbrand: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
     color: "#59656b",
-    maxWidth: 340
+    maxWidth: 270
+  },
+  brandMark: {
+    width: 34,
+    height: 34,
+    borderRadius: 12,
+    backgroundColor: "#f7f2e8",
+    borderWidth: 1,
+    borderColor: "#d8cfbf",
+    padding: 5,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 4
+  },
+  brandCell: {
+    width: 9,
+    height: 9,
+    borderRadius: 4
+  },
+  brandCellDark: {
+    backgroundColor: "#183d33"
+  },
+  brandCellGold: {
+    backgroundColor: "#f0b35a"
+  },
+  brandCellMint: {
+    backgroundColor: "#dceede"
+  },
+  brandCellPaper: {
+    backgroundColor: "#efe6d6"
   },
   badge: {
     alignSelf: "flex-start",

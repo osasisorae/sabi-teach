@@ -29,6 +29,8 @@ The teacher enters a topic like `Nouns` or `Pronouns`, and the app generates:
 - an answer key
 - a short take-home revision note
 
+Right now the app already works as a real mobile prototype, and lesson generation is running locally through Gemma 4 via Ollama.
+
 ### Why I Care About This
 
 I’ve wanted to build something in education for a long time.
@@ -80,14 +82,14 @@ Right now, I have:
 - an Android-first mobile prototype
 - a structured lesson flow
 - local lesson saving for offline reopening
-- a switchable generation layer
-- a small generation server for connecting the app to real model output
+- real lesson generation through a small local server
+- Gemma 4 running locally via Ollama
 
 What is still in progress:
 
 - improving the actual generation quality
 - validating Efik support text more carefully
-- tightening the UI and navigation
+- tightening the UI and demo presentation
 - expanding the lesson content packs
 
 So this is real, but still early.
@@ -106,8 +108,8 @@ That is the spirit of this project.
 
 The next step is straightforward:
 
-- connect the app fully to real Gemma-backed generation
 - improve lesson quality topic by topic
 - make the experience cleaner on a real phone
+- prepare the final video, public repo, and writeup
 
 SabiTeach is still small right now, but that is on purpose. I’d rather build one honest thing that works than pretend I’m building everything at once.

@@ -1,0 +1,55 @@
+<svg width="560" height="280" viewBox="0 0 560 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="44" y1="22" x2="520" y2="258" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF6EC"/>
+      <stop offset="1" stop-color="#F1E8D9"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="363" y1="30" x2="504" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF7"/>
+      <stop offset="1" stop-color="#F8F2E7"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="560" height="280" rx="32" fill="url(#bg)"/>
+  <rect x="16" y="16" width="528" height="248" rx="26" fill="#FFFDF7" stroke="#DDD2C1" stroke-width="2"/>
+
+  <g transform="translate(36 34)">
+    <rect x="0" y="0" width="38" height="38" rx="13" fill="#F7F2E8" stroke="#D8CFBF" stroke-width="1.5"/>
+    <rect x="7" y="7" width="10" height="10" rx="4" fill="#183D33"/>
+    <rect x="21" y="7" width="10" height="10" rx="4" fill="#F0B35A"/>
+    <rect x="7" y="21" width="10" height="10" rx="4" fill="#DCEEDE"/>
+    <rect x="21" y="21" width="10" height="10" rx="4" fill="#EFE6D6"/>
+  </g>
+
+  <text x="86" y="65" fill="#183D33" font-size="34" font-weight="800" font-family="Arial, Helvetica, sans-serif">SabiTeach</text>
+  <text x="36" y="97" fill="#5F6A70" font-size="16" font-weight="500" font-family="Arial, Helvetica, sans-serif">Teach English with local-language support</text>
+
+  <rect x="36" y="116" width="174" height="34" rx="17" fill="#DCEEDE"/>
+  <text x="55" y="138" fill="#1F5F46" font-size="15" font-weight="700" font-family="Arial, Helvetica, sans-serif">Primary 5 English + Efik</text>
+
+  <text x="36" y="180" fill="#183D33" font-size="30" font-weight="800" font-family="Arial, Helvetica, sans-serif">One topic in.</text>
+  <text x="36" y="214" fill="#183D33" font-size="30" font-weight="800" font-family="Arial, Helvetica, sans-serif">One lesson out.</text>
+
+  <text x="36" y="243" fill="#6A767D" font-size="15" font-weight="500" font-family="Arial, Helvetica, sans-serif">Lesson objective, explanation, quiz, answer key, and revision sheet.</text>
+
+  <g transform="translate(356 28)">
+    <rect x="0" y="0" width="158" height="224" rx="28" fill="url(#panel)" stroke="#DDD2C1" stroke-width="2"/>
+    <rect x="18" y="16" width="84" height="10" rx="5" fill="#183D33" opacity="0.13"/>
+    <text x="18" y="48" fill="#183D33" font-size="18" font-weight="800" font-family="Arial, Helvetica, sans-serif">Generate</text>
+
+    <rect x="18" y="60" width="53" height="24" rx="12" fill="#E5EFE6"/>
+    <rect x="77" y="60" width="47" height="24" rx="12" fill="#E5EFE6"/>
+    <text x="31" y="76" fill="#1F5F46" font-size="11" font-weight="700" font-family="Arial, Helvetica, sans-serif">P5</text>
+    <text x="88" y="76" fill="#1F5F46" font-size="11" font-weight="700" font-family="Arial, Helvetica, sans-serif">Efik</text>
+
+    <rect x="18" y="96" width="122" height="34" rx="16" fill="#FFFFFF" stroke="#D7CCBB" stroke-width="1.5"/>
+    <text x="31" y="118" fill="#304046" font-size="13" font-weight="600" font-family="Arial, Helvetica, sans-serif">Nouns</text>
+
+    <rect x="18" y="146" width="122" height="30" rx="15" fill="#F0B35A"/>
+    <text x="48" y="166" fill="#1D170F" font-size="13" font-weight="800" font-family="Arial, Helvetica, sans-serif">Generate</text>
+
+    <rect x="18" y="190" width="122" height="18" rx="9" fill="#EFE6D6"/>
+    <rect x="18" y="214" width="92" height="8" rx="4" fill="#D9CFBE"/>
+    <rect x="18" y="228" width="112" height="8" rx="4" fill="#E3DACA"/>
+  </g>
+</svg>

@@ -1,0 +1,47 @@
+<svg width="560" height="280" viewBox="0 0 560 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="thumb-bg" x1="0" y1="0" x2="560" y2="280" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#183D33"/>
+      <stop offset="1" stop-color="#225346"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="374" y1="54" x2="530" y2="214" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0B35A"/>
+      <stop offset="1" stop-color="#DCEEDE"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="560" height="280" rx="32" fill="url(#thumb-bg)"/>
+  <circle cx="494" cy="74" r="78" fill="#2D6D5A" opacity="0.28"/>
+  <circle cx="454" cy="224" r="108" fill="#1B4A3D" opacity="0.42"/>
+
+  <g transform="translate(34 32)">
+    <rect x="0" y="0" width="42" height="42" rx="14" fill="#FFFDF7" opacity="0.94"/>
+    <rect x="8" y="8" width="10" height="10" rx="4" fill="#183D33"/>
+    <rect x="24" y="8" width="10" height="10" rx="4" fill="#F0B35A"/>
+    <rect x="8" y="24" width="10" height="10" rx="4" fill="#DCEEDE"/>
+    <rect x="24" y="24" width="10" height="10" rx="4" fill="#EFE6D6"/>
+  </g>
+
+  <text x="88" y="70" fill="#FFFDF7" font-size="34" font-weight="800" font-family="Arial, Helvetica, sans-serif">SabiTeach</text>
+  <text x="34" y="112" fill="#D7EFE0" font-size="28" font-weight="800" font-family="Arial, Helvetica, sans-serif">Turn one topic into</text>
+  <text x="34" y="145" fill="#D7EFE0" font-size="28" font-weight="800" font-family="Arial, Helvetica, sans-serif">a classroom-ready lesson.</text>
+
+  <text x="34" y="183" fill="#D5E0DB" font-size="16" font-weight="500" font-family="Arial, Helvetica, sans-serif">Built for low-connectivity classrooms in Nigeria.</text>
+
+  <rect x="34" y="202" width="154" height="34" rx="17" fill="#F0B35A"/>
+  <text x="55" y="224" fill="#1D170F" font-size="15" font-weight="800" font-family="Arial, Helvetica, sans-serif">Gemma 4 + Ollama</text>
+
+  <g transform="translate(362 42)">
+    <rect x="0" y="0" width="146" height="196" rx="26" fill="#FFFDF7" stroke="#DDD2C1" stroke-width="2"/>
+    <rect x="17" y="16" width="82" height="10" rx="5" fill="#183D33" opacity="0.14"/>
+    <rect x="17" y="42" width="112" height="118" rx="20" fill="url(#glow)" opacity="0.2"/>
+    <text x="17" y="60" fill="#183D33" font-size="17" font-weight="800" font-family="Arial, Helvetica, sans-serif">Nouns</text>
+    <rect x="17" y="74" width="66" height="24" rx="12" fill="#DCEEDE"/>
+    <text x="28" y="90" fill="#1F5F46" font-size="11" font-weight="700" font-family="Arial, Helvetica, sans-serif">Primary 5</text>
+    <rect x="17" y="112" width="112" height="12" rx="6" fill="#D8CFBF"/>
+    <rect x="17" y="132" width="92" height="12" rx="6" fill="#E4DBCC"/>
+    <rect x="17" y="152" width="104" height="12" rx="6" fill="#D8CFBF"/>
+    <rect x="17" y="176" width="112" height="30" rx="15" fill="#F0B35A"/>
+    <text x="50" y="195" fill="#1D170F" font-size="13" font-weight="800" font-family="Arial, Helvetica, sans-serif">Generate</text>
+  </g>
+</svg>
