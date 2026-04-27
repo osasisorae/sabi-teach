@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "SabiTeach",
+    "slug": "sabiteach-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.sabiteach.mobile",
+      "edgeToEdgeEnabled": true
+    },
+    "ios": {
+      "supportsTablet": false
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "language": "Efik",
+  "phrases": [
+    {
+      "id": "listen-carefully",
+      "english": "Listen carefully.",
+      "support_text": "Kop nti ikot."
+    },
+    {
+      "id": "repeat-after-me",
+      "english": "Repeat after me.",
+      "support_text": "Tuo ke idem mi."
+    },
+    {
+      "id": "answer-the-question",
+      "english": "Answer the question.",
+      "support_text": "Sio mkpaña."
+    },
+    {
+      "id": "read-this-sentence",
+      "english": "Read this sentence.",
+      "support_text": "Kot ikpehe-a."
+    },
+    {
+      "id": "write-in-your-book",
+      "english": "Write in your book.",
+      "support_text": "Dek ke akwụkwọ fo."
+    },
+    {
+      "id": "work-in-pairs",
+      "english": "Work in pairs.",
+      "support_text": "Nam ke iba."
+    }
+  ],
+  "note": "These are starter support phrases only. They must be reviewed by a fluent Efik speaker before public release."
+}

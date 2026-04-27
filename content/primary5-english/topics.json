@@ -1,0 +1,46 @@
+{
+  "class_level": "Primary 5",
+  "subject": "English",
+  "topics": [
+    {
+      "id": "nouns",
+      "title": "Nouns",
+      "goal": "Help learners identify naming words for people, places, animals, and things."
+    },
+    {
+      "id": "pronouns",
+      "title": "Pronouns",
+      "goal": "Help learners replace nouns correctly with words such as he, she, it, and they."
+    },
+    {
+      "id": "verbs",
+      "title": "Verbs",
+      "goal": "Help learners identify action words and use them in short sentences."
+    },
+    {
+      "id": "adjectives",
+      "title": "Adjectives",
+      "goal": "Help learners describe nouns with simple descriptive words."
+    },
+    {
+      "id": "sentence-structure",
+      "title": "Simple Sentence Structure",
+      "goal": "Help learners build clear subject-verb-object sentences."
+    },
+    {
+      "id": "tenses",
+      "title": "Basic Tenses",
+      "goal": "Help learners distinguish present, past, and future actions."
+    },
+    {
+      "id": "parts-of-speech",
+      "title": "Parts of Speech Overview",
+      "goal": "Help learners recognize the role of common word groups in a sentence."
+    },
+    {
+      "id": "comprehension-support",
+      "title": "Comprehension Passage Support",
+      "goal": "Help learners read short passages and answer simple meaning-based questions."
+    }
+  ]
+}

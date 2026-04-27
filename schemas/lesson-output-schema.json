@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SabiTeachLesson",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "lesson_title",
+    "class_level",
+    "subject",
+    "support_language",
+    "topic",
+    "learning_objective",
+    "teacher_explanation_english",
+    "support_explanation",
+    "examples",
+    "class_activity",
+    "quiz_questions",
+    "answer_key",
+    "take_home_revision"
+  ],
+  "properties": {
+    "lesson_title": {
+      "type": "string",
+      "minLength": 3
+    },
+    "class_level": {
+      "type": "string",
+      "minLength": 3
+    },
+    "subject": {
+      "type": "string",
+      "const": "English"
+    },
+    "support_language": {
+      "type": "string",
+      "minLength": 2
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 2
+    },
+    "learning_objective": {
+      "type": "string",
+      "minLength": 8
+    },
+    "teacher_explanation_english": {
+      "type": "string",
+      "minLength": 20
+    },
+    "support_explanation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "text"
+      ],
+      "properties": {
+        "language": {
+          "type": "string",
+          "minLength": 2
+        },
+        "text": {
+          "type": "string",
+          "minLength": 8
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 3
+      }
+    },
+    "class_activity": {
+      "type": "string",
+      "minLength": 8
+    },
+    "quiz_questions": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      }
+    },
+    "answer_key": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "take_home_revision": {
+      "type": "string",
+      "minLength": 8
+    }
+  }
+}

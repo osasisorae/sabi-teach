@@ -1,0 +1,36 @@
+{
+  "language": "Efik",
+  "entries": [
+    {
+      "term": "noun",
+      "english_definition": "A naming word for a person, place, animal, or thing.",
+      "support_note": "Use short Efik explanation focused on naming people, places, and things."
+    },
+    {
+      "term": "pronoun",
+      "english_definition": "A word used in place of a noun.",
+      "support_note": "Explain with simple replacements such as he, she, it, and they."
+    },
+    {
+      "term": "verb",
+      "english_definition": "An action or doing word.",
+      "support_note": "Prefer action-based examples children know well."
+    },
+    {
+      "term": "adjective",
+      "english_definition": "A describing word.",
+      "support_note": "Use simple attributes such as big, small, red, and happy."
+    },
+    {
+      "term": "sentence",
+      "english_definition": "A group of words that expresses a complete thought.",
+      "support_note": "Keep the explanation short and classroom-friendly."
+    },
+    {
+      "term": "tense",
+      "english_definition": "A form that shows when an action happens.",
+      "support_note": "Use today, yesterday, and tomorrow style examples."
+    }
+  ],
+  "note": "This glossary is a seed pack for prompt grounding. It is not a finished bilingual dictionary."
+}
