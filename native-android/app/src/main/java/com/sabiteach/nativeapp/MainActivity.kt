@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import com.sabiteach.nativeapp.generation.ApiLessonGenerator
 import com.sabiteach.nativeapp.generation.MockLessonGenerator
+import com.sabiteach.nativeapp.storage.SharedPreferencesLessonStore
 import com.sabiteach.nativeapp.ui.SabiTeachApp
 import com.sabiteach.nativeapp.ui.SabiTeachViewModel
 import com.sabiteach.nativeapp.ui.theme.SabiTeachTheme
@@ -22,7 +23,11 @@ class MainActivity : ComponentActivity() {
                 ApiLessonGenerator(baseUrl = baseUrl)
             }
         }
-        val viewModel = SabiTeachViewModel(generator = generator)
+        val lessonStore = SharedPreferencesLessonStore(applicationContext)
+        val viewModel = SabiTeachViewModel(
+            generator = generator,
+            lessonStore = lessonStore
+        )
 
         setContent {
             SabiTeachTheme {

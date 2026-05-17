@@ -4,15 +4,19 @@ import com.sabiteach.nativeapp.generation.LessonGenerationRequest
 import com.sabiteach.nativeapp.generation.LessonGenerator
 import com.sabiteach.nativeapp.model.Lesson
 import com.sabiteach.nativeapp.model.LessonMode
+import com.sabiteach.nativeapp.storage.LessonStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class SabiTeachViewModel(
-    private val generator: LessonGenerator
+    private val generator: LessonGenerator,
+    private val lessonStore: LessonStore
 ) {
-    private val _uiState = MutableStateFlow(SabiTeachUiState())
+    private val _uiState = MutableStateFlow(
+        SabiTeachUiState(savedLessons = lessonStore.loadLessons())
+    )
     val uiState: StateFlow<SabiTeachUiState> = _uiState.asStateFlow()
 
     suspend fun refreshAvailability() {
@@ -54,8 +58,20 @@ class SabiTeachViewModel(
 
     fun saveCurrentLesson() {
         val lesson = _uiState.value.currentLesson ?: return
-        _uiState.update {
-            it.copy(savedLessons = listOf(lesson) + it.savedLessons.filterNot { saved -> saved.id == lesson.id })
+        val nextLessons = listOf(lesson) + _uiState.value.savedLessons.filterNot { saved ->
+            saved.id == lesson.id
+        }
+
+        runCatching {
+            lessonStore.saveLessons(nextLessons)
+        }.onSuccess {
+            _uiState.update { it.copy(savedLessons = nextLessons, errorMessage = null) }
+        }.onFailure { error ->
+            _uiState.update {
+                it.copy(
+                    errorMessage = error.message ?: "Failed to save lesson locally."
+                )
+            }
         }
     }
 
