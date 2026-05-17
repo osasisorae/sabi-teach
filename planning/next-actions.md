@@ -1,45 +1,40 @@
 # Next Actions
 
-## What Happens Next
+## Current Phase
 
-The next phase is execution, not more ideation.
+The project is past ideation and past first scaffold work.
+
+The current phase is:
+
+- tighten the proven Expo workflow
+- verify the native Android branch
+- close the gap to true on-device operation
 
 ## Priority Order
 
-1. Lock the exact first teaching slice.
-2. Decide between `Efik` and `Ibibio`.
-3. Define the lesson output schema.
-4. Choose the app stack.
-5. Scaffold the mobile app.
+1. Finish and commit the Expo lesson workbench:
+   - teacher mode
+   - student handout mode
+   - quick oral quiz mode
+   - board work mode
+2. Open `native-android/` in Android Studio and fix the first sync/build issue.
+3. Add persistent local storage to native Android.
+4. Wire generator availability states clearly for:
+   - mock
+   - remote API
+   - future AICore path
+5. Keep the README, checkpoint, and submission materials aligned with what is actually working.
 
-## Recommendation
+## What Is Already Locked
 
-If we need a default right now, use:
-
-- `Primary 5 English`
+- `Primary 5`
+- `English`
 - support language: `Efik`
+- structured lesson schema
+- Expo prototype
+- local lesson saving in Expo
+- local server generation path
 
-Reason:
+## Execution Rule
 
-- strong identity
-- manageable scope
-- compelling demo story
-
-## Decision We Still Need
-
-Choose one:
-
-- `Efik`
-- `Ibibio`
-
-Everything else can proceed once that is locked.
-
-## After That
-
-I should immediately create:
-
-- the app architecture plan
-- the lesson output schema file
-- the first curriculum and glossary seed files
-
-Then we can start scaffolding the actual product.
+Do not spend more time reopening early product-definition decisions unless a build problem forces it.

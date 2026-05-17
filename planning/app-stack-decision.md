@@ -2,63 +2,60 @@
 
 ## Decision
 
-Use `Expo / React Native` for the first mobile build.
+Use a **two-stage app strategy**:
+
+- `Expo / React Native` for the proven prototype
+- `Native Android` for the true on-device generation path
 
 ## Why
 
-- We already have an Expo-based mobile project pattern in this workspace: `ifendo-mvp`.
-- It is the fastest route to an Android-first prototype.
-- It supports a single codebase for future extension.
-- It is good enough for a strong hackathon demo.
+- Expo was the fastest way to prove the teacher workflow.
+- Expo already proved local lesson saving and offline reopening.
+- Expo does not yet give us a credible end state for on-device AI generation on Android hardware.
+- Native Android is the serious path for AICore / ML Kit style on-device execution.
 
 ## Target Platform
 
-- Primary target: Android
-- Secondary target: iOS later if useful
+- Primary target: Android only
+- Secondary target: none until the Android path is real
+
+## Current Repo Reality
+
+What is true now:
+
+- the Expo app is the working demo
+- the server-backed generation path is working
+- native Android is scaffolded but not yet verified end to end
 
 ## Immediate Technical Posture
 
-Version one should optimize for:
+Optimize for:
 
-- fast iteration
-- local storage
-- strong demo flow
-- clear offline behavior
-
-It should not optimize for:
-
-- large-scale backend complexity
-- multi-device synchronization
-- production-grade cloud architecture
+- strong Android demo flow
+- truthful offline claims
+- local persistence
+- clear generator boundaries
+- gradual migration from Expo to native Android where necessary
 
 ## Recommended Core Dependencies
 
-- Expo / React Native
-- TypeScript
-- AsyncStorage or SQLite for local persistence
-- a lightweight local content format such as JSON
+- Expo / React Native for prototype speed
+- Kotlin + Jetpack Compose for native Android
+- AsyncStorage in Expo
+- Room or another device-local persistence layer in native Android
+- lightweight local content such as JSON packs
 
 ## Why Not Overbuild Now
 
-We do not need a complex backend to prove the product.
+We still do not need a heavy backend to prove the product.
 
-The hackathon proof is:
+The proof we need is:
 
 - the classroom workflow is real
 - Gemma 4 is central
 - the app remains useful offline
+- the transition to real on-device generation is believable and concrete
 
-## Expected App Shape
+## Architecture Rule
 
-- mobile client first
-- content packs bundled locally
-- lessons saved locally
-- model integration isolated behind one generation module
-
-## Reuse Opportunity
-
-We can borrow project structure ideas from `ifendo-mvp`, but we should not inherit unrelated feature complexity.
-
-## Constraint
-
-If a stack choice slows down the first Android demo, it is the wrong choice for now.
+Do not let the prototype stack decision force us into weak claims about offline generation.

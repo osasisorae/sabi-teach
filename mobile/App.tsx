@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -14,6 +14,14 @@ import {
 import { CLASS_LEVEL, PRIMARY_5_ENGLISH_TOPICS, SUBJECT } from "./src/content/topics";
 import { SUPPORT_LANGUAGE } from "./src/content/efik";
 import { generateLesson, getGenerationMode } from "./src/lib/generation";
+import {
+  buildBoardWork,
+  buildOralQuiz,
+  buildStudentHandout,
+  buildTeacherSteps,
+  simplifySupportText,
+  type LessonMode
+} from "./src/lib/lesson-modes";
 import { loadSavedLessons, saveLesson } from "./src/lib/storage";
 import type { Lesson } from "./src/types/lesson";
 
@@ -280,31 +288,22 @@ function GenerateScreen(props: {
       ) : null}
 
       {props.currentLesson ? (
-        <View style={styles.resultCard}>
-          <View style={styles.resultHeader}>
-            <Text style={styles.resultEyebrow}>Generated Lesson</Text>
-            <Text style={styles.resultHint}>Review, then save this lesson for offline access on the phone.</Text>
-          </View>
-          <Text style={styles.sectionTitle}>{props.currentLesson.lesson_title}</Text>
-          <Section title="Learning Objective" body={props.currentLesson.learning_objective} />
-          <Section title="Teacher Explanation (English)" body={props.currentLesson.teacher_explanation_english} />
-          <Section title={`Support Explanation (${props.currentLesson.support_explanation.language})`} body={props.currentLesson.support_explanation.text} />
-          <ListSection title="Examples" items={props.currentLesson.examples} />
-          <Section title="Class Activity" body={props.currentLesson.class_activity} />
-          <ListSection title="Quiz Questions" items={props.currentLesson.quiz_questions} />
-          <ListSection title="Answer Key" items={props.currentLesson.answer_key} />
-          <Section title="Take-Home Revision" body={props.currentLesson.take_home_revision} />
-
-          <View style={styles.primaryActionRow}>
-            <ActionButton
-              label={props.isSaving ? "Saving..." : "Save Lesson"}
-              onPress={props.onSaveLesson}
-              variant="primary"
-              disabled={props.isSaving}
-              stretch
-            />
-          </View>
-        </View>
+        <LessonWorkbench
+          lesson={props.currentLesson}
+          eyebrow="Generated Lesson"
+          hint="Review the mode you need, then save this lesson for offline access on the phone."
+          saveAction={
+            <View style={styles.primaryActionRow}>
+              <ActionButton
+                label={props.isSaving ? "Saving..." : "Save Lesson"}
+                onPress={props.onSaveLesson}
+                variant="primary"
+                disabled={props.isSaving}
+                stretch
+              />
+            </View>
+          }
+        />
       ) : null}
     </ScrollView>
   );
@@ -367,18 +366,151 @@ function LessonDetailScreen(props: {
         </View>
       </View>
 
-      <View style={styles.resultCard}>
-        <Text style={styles.sectionTitle}>{props.lesson.lesson_title}</Text>
-        <Section title="Learning Objective" body={props.lesson.learning_objective} />
-        <Section title="Teacher Explanation (English)" body={props.lesson.teacher_explanation_english} />
-        <Section title={`Support Explanation (${props.lesson.support_explanation.language})`} body={props.lesson.support_explanation.text} />
-        <ListSection title="Examples" items={props.lesson.examples} />
-        <Section title="Class Activity" body={props.lesson.class_activity} />
-        <ListSection title="Quiz Questions" items={props.lesson.quiz_questions} />
-        <ListSection title="Answer Key" items={props.lesson.answer_key} />
-        <Section title="Take-Home Revision" body={props.lesson.take_home_revision} />
-      </View>
+      <LessonWorkbench
+        lesson={props.lesson}
+        eyebrow="Saved Lesson"
+        hint="Switch modes depending on whether you are teaching, writing on the board, or sharing a handout."
+      />
     </ScrollView>
+  );
+}
+
+function LessonWorkbench(props: {
+  lesson: Lesson;
+  eyebrow: string;
+  hint: string;
+  saveAction?: ReactNode;
+}) {
+  const [mode, setMode] = useState<LessonMode>("teacher");
+
+  return (
+    <View style={styles.resultCard}>
+      <View style={styles.resultHeader}>
+        <Text style={styles.resultEyebrow}>{props.eyebrow}</Text>
+        <Text style={styles.resultHint}>{props.hint}</Text>
+      </View>
+      <Text style={styles.sectionTitle}>{props.lesson.lesson_title}</Text>
+      <LessonModeTabs currentMode={mode} onChange={setMode} />
+      {mode === "teacher" ? <TeacherModeView lesson={props.lesson} /> : null}
+      {mode === "handout" ? <StudentHandoutView lesson={props.lesson} /> : null}
+      {mode === "oral" ? <OralQuizView lesson={props.lesson} /> : null}
+      {mode === "board" ? <BoardWorkView lesson={props.lesson} /> : null}
+      {props.saveAction ?? null}
+    </View>
+  );
+}
+
+function LessonModeTabs(props: {
+  currentMode: LessonMode;
+  onChange: (mode: LessonMode) => void;
+}) {
+  return (
+    <View style={styles.modeTabsWrap}>
+      <View style={styles.modeTabs}>
+        <ModeChip
+          label="Teacher"
+          isActive={props.currentMode === "teacher"}
+          onPress={() => props.onChange("teacher")}
+        />
+        <ModeChip
+          label="Handout"
+          isActive={props.currentMode === "handout"}
+          onPress={() => props.onChange("handout")}
+        />
+        <ModeChip
+          label="Oral Quiz"
+          isActive={props.currentMode === "oral"}
+          onPress={() => props.onChange("oral")}
+        />
+        <ModeChip
+          label="Board Work"
+          isActive={props.currentMode === "board"}
+          onPress={() => props.onChange("board")}
+        />
+      </View>
+    </View>
+  );
+}
+
+function TeacherModeView(props: { lesson: Lesson }) {
+  const steps = buildTeacherSteps(props.lesson);
+
+  return (
+    <View style={styles.modeCard}>
+      <View style={styles.modeIntro}>
+        <Text style={styles.modeTitle}>Teacher Mode</Text>
+        <Text style={styles.modeHint}>Use this view while planning or teaching the lesson.</Text>
+      </View>
+      <Section title="Learning Objective" body={props.lesson.learning_objective} />
+      <Section title="Teacher Explanation (English)" body={props.lesson.teacher_explanation_english} />
+      <Section
+        title={`Simpler ${props.lesson.support_explanation.language} Support`}
+        body={simplifySupportText(
+          props.lesson.support_explanation.text,
+          props.lesson.support_explanation.language
+        )}
+      />
+      <ListSection title="Teaching Steps" items={steps} />
+      <ListSection title="Examples" items={props.lesson.examples} />
+      <Section title="Class Activity" body={props.lesson.class_activity} />
+      <ListSection title="Answer Key" items={props.lesson.answer_key} />
+    </View>
+  );
+}
+
+function StudentHandoutView(props: { lesson: Lesson }) {
+  const handout = buildStudentHandout(props.lesson);
+
+  return (
+    <View style={styles.modeCard}>
+      <View style={styles.modeIntro}>
+        <Text style={styles.modeTitle}>Student Handout</Text>
+        <Text style={styles.modeHint}>A cleaner version you can read out, copy, or share with learners.</Text>
+      </View>
+      <Section title="Topic" body={handout.title} />
+      <Section title="Today We Are Learning" body={handout.intro} />
+      <Section title="Learning Objective" body={handout.objective} />
+      <ListSection title="Examples" items={handout.examples} />
+      <ListSection title="Practice Questions" items={handout.practice} />
+      <Section title="Take-Home Task" body={handout.homework} />
+    </View>
+  );
+}
+
+function OralQuizView(props: { lesson: Lesson }) {
+  const oralQuiz = buildOralQuiz(props.lesson);
+
+  return (
+    <View style={styles.modeCard}>
+      <View style={styles.modeIntro}>
+        <Text style={styles.modeTitle}>Quick Oral Quiz</Text>
+        <Text style={styles.modeHint}>Use short questions aloud and glance at the expected answer.</Text>
+      </View>
+      {oralQuiz.map((item, index) => (
+        <View key={`oral-${index}`} style={styles.qaCard}>
+          <Text style={styles.qaPrompt}>{index + 1}. {item.prompt}</Text>
+          <Text style={styles.qaAnswer}>Expected answer: {item.expectedAnswer}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function BoardWorkView(props: { lesson: Lesson }) {
+  const board = buildBoardWork(props.lesson);
+
+  return (
+    <View style={styles.modeCard}>
+      <View style={styles.modeIntro}>
+        <Text style={styles.modeTitle}>Board Work</Text>
+        <Text style={styles.modeHint}>Use this as a quick board plan instead of reading the whole lesson.</Text>
+      </View>
+      <Section title="Write On The Board" body={board.boardTitle} />
+      <Section title="Objective" body={board.boardObjective} />
+      <ListSection title="Key Points" items={board.keyPoints} />
+      <ListSection title="Examples To Write" items={board.examples} />
+      <ListSection title="Quick Task" items={board.quickTask} />
+    </View>
   );
 }
 
@@ -453,6 +585,23 @@ function TopicChip(props: {
       style={[styles.chip, props.isActive ? styles.chipActive : null]}
     >
       <Text style={[styles.chipText, props.isActive ? styles.chipTextActive : null]}>{props.label}</Text>
+    </Pressable>
+  );
+}
+
+function ModeChip(props: {
+  label: string;
+  isActive: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      onPress={props.onPress}
+      style={[styles.modeChip, props.isActive ? styles.modeChipActive : null]}
+    >
+      <Text style={[styles.modeChipText, props.isActive ? styles.modeChipTextActive : null]}>
+        {props.label}
+      </Text>
     </Pressable>
   );
 }
@@ -816,6 +965,50 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontSize: 13
   },
+  modeTabsWrap: {
+    paddingBottom: 4
+  },
+  modeTabs: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10
+  },
+  modeChip: {
+    backgroundColor: "#f7f2e8",
+    borderWidth: 1,
+    borderColor: "#d7ccbb",
+    borderRadius: 999,
+    paddingHorizontal: 14,
+    paddingVertical: 9
+  },
+  modeChipActive: {
+    backgroundColor: "#183d33",
+    borderColor: "#183d33"
+  },
+  modeChipText: {
+    color: "#52626a",
+    fontWeight: "700",
+    fontSize: 13
+  },
+  modeChipTextActive: {
+    color: "#f6f0e4"
+  },
+  modeCard: {
+    gap: 16
+  },
+  modeIntro: {
+    gap: 4
+  },
+  modeTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#183d33"
+  },
+  modeHint: {
+    color: "#627077",
+    lineHeight: 20,
+    fontSize: 13
+  },
   sectionBlock: {
     gap: 8
   },
@@ -833,6 +1026,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: "#435259"
+  },
+  qaCard: {
+    backgroundColor: "#f8f3e8",
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "#e2d7c6",
+    padding: 14,
+    gap: 8
+  },
+  qaPrompt: {
+    color: "#183d33",
+    fontWeight: "700",
+    lineHeight: 22
+  },
+  qaAnswer: {
+    color: "#5d696f",
+    lineHeight: 20
   },
   emptyCard: {
     backgroundColor: "#fffdf7",

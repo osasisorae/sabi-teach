@@ -1,112 +1,87 @@
 # Implementation Roadmap
 
-## Immediate Direction
+## Current Position
 
-We are done choosing the broad idea.
+The early product-definition work is already complete.
 
-Now we need to choose the smallest version that is still strong enough to demo.
+Already completed:
 
-## Recommended Build Sequence
+- first teaching slice is locked to `Primary 5 English`
+- support language is locked to `Efik`
+- lesson schema exists
+- starter content packs exist
+- Expo mobile app exists
+- local lesson saving exists in Expo
+- generation server exists with `mock` and Ollama-backed paths
 
-### Step 1: Lock The First Teaching Slice
+The current roadmap is about **hardening what works** and **moving the product toward native Android on-device generation**.
 
-Choose:
+## Completed Foundation
 
-- one class level
-- one support language
-- one subject
-- five to ten lesson topics
+- product slice selection
+- schema definition
+- language pack seeding
+- Expo prototype scaffold
+- remote generation bridge
+- offline reopen of saved lessons in Expo
 
-Recommended default:
+## Current Build Sequence
 
-- Subject: `Primary English`
-- Level: `Primary 5`
-- Support language: `Efik`
+### Step 1: Finish Expo Workflow Polish
 
-Alternative:
+Current open work:
 
-- Subject: `Primary English`
-- Level: `Primary 5`
-- Support language: `Ibibio`
+- commit the lesson workbench changes
+- keep the app messaging truthful about offline limits
+- preserve the narrow teacher workflow that already demos well
 
-## Why Primary 5
+### Step 2: Verify Native Android Build
 
-- old enough for clear grammar and reading topics
-- easy for judges to understand
-- broad enough to show real classroom utility
-- simple enough for a clean MVP
+Do this in Android Studio first:
 
-### Step 2: Define The Core Workflow
+- sync Gradle
+- use the embedded JDK if needed
+- install missing SDK components if prompted
+- report the first real sync/build error and fix from there
 
-Version one flow:
+### Step 3: Reach Feature Parity In Native
 
-1. Teacher selects class and support language.
-2. Teacher enters an English topic.
-3. Gemma 4 generates structured lesson output.
-4. Teacher saves the lesson locally.
-5. Teacher reopens the lesson offline.
+Native Android still needs:
 
-### Step 3: Create The First Content Packs
+- real local lesson persistence
+- reopened saved lessons after app restart
+- the same teaching modes already proved in Expo
+- clearer generator availability and fallback messaging
 
-We need:
+### Step 4: Replace Scaffolded On-Device Generation
 
-- lesson schema
-- English topic list
-- local-language classroom phrase pack
-- core glossary for the selected language
+The AICore path is still a stub.
 
-### Step 4: Scaffold The App
+Before claiming true offline generation, we must have:
 
-First screens:
+- a working on-device runtime on supported hardware
+- structured JSON output parsed into the lesson model
+- clear unsupported-device behavior
 
-- home
-- lesson generator
-- generated lesson view
-- saved lessons
-- settings for language and offline packs
+### Step 5: Keep Demo Claims Tight
 
-### Step 5: Build The Generation Layer
+The public story should stay truthful:
 
-The generation layer should produce:
-
-- lesson objective
-- teacher explanation in English
-- support explanation in selected language
-- examples
-- class activity
-- five quiz questions
-- answer key
-- take-home revision
-
-### Step 6: Prove Offline Usefulness
-
-We need to demonstrate:
-
-- local lesson storage
-- cached content pack
-- usable workflow in airplane mode
-
-### Step 7: Prepare The Demo Narrative
-
-The demo should show:
-
-- teacher problem
-- lesson generation
-- bilingual teaching support
-- offline reopening of saved content
+- Expo proves the workflow
+- native Android is the path to real on-device generation
+- saved lessons reopen offline today
+- new lesson generation is not yet fully on-device
 
 ## Build Order
 
-- lock scope
-- prepare curriculum slice
-- prepare language pack
-- define output schema
-- scaffold mobile app
-- wire generation
-- save lessons locally
-- test on device
-- record demo
+- finish Expo polish
+- verify native Android sync/build
+- add native persistence
+- validate remote API mode on a phone
+- wire real on-device generation
+- test on supported Android hardware
+- update demo assets and writeup
 
 ## Rule
 
-Do not start building screens until the teaching slice is locked.
+Do not claim full offline generation until the native on-device path actually works on a real device.
