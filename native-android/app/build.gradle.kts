@@ -14,6 +14,11 @@ val sabiteachApiBaseUrl =
         ?: System.getenv("SABITEACH_API_BASE_URL")
         ?: ""
 
+val sabiteachGenerationMode =
+    (findProperty("sabiteachGenerationMode") as String?)
+        ?: System.getenv("SABITEACH_GENERATION_MODE")
+        ?: ""
+
 android {
     namespace = "com.sabiteach.nativeapp"
     compileSdk = 35
@@ -27,6 +32,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "SABITEACH_API_BASE_URL", quoteForBuildConfig(sabiteachApiBaseUrl))
+        buildConfigField("String", "SABITEACH_GENERATION_MODE", quoteForBuildConfig(sabiteachGenerationMode))
         vectorDrawables {
             useSupportLibrary = true
         }

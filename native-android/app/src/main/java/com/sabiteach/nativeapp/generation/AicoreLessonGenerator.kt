@@ -3,8 +3,10 @@ package com.sabiteach.nativeapp.generation
 import com.sabiteach.nativeapp.model.Lesson
 
 class AicoreLessonGenerator : LessonGenerator {
+    override val mode: GeneratorMode = GeneratorMode.OnDevice
+
     override suspend fun availability(): GeneratorAvailability {
-        return GeneratorAvailability.Unknown
+        return GeneratorAvailability.Unsupported
     }
 
     override suspend fun generate(request: LessonGenerationRequest): Lesson {

@@ -14,6 +14,8 @@ import java.net.URL
 class ApiLessonGenerator(
     private val baseUrl: String
 ) : LessonGenerator {
+    override val mode: GeneratorMode = GeneratorMode.RemoteApi
+
     override suspend fun availability(): GeneratorAvailability {
         return if (baseUrl.isBlank()) GeneratorAvailability.Unavailable else GeneratorAvailability.Ready
     }

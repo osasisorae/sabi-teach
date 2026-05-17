@@ -29,6 +29,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -38,6 +39,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import com.sabiteach.nativeapp.generation.GeneratorAvailability
+import com.sabiteach.nativeapp.generation.GeneratorMode
 import com.sabiteach.nativeapp.model.Lesson
 import com.sabiteach.nativeapp.model.LessonMode
 import com.sabiteach.nativeapp.model.LessonModeFormatter
@@ -58,6 +61,10 @@ private val starterTopics = listOf(
 fun SabiTeachApp(viewModel: SabiTeachViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(viewModel) {
+        viewModel.refreshAvailability()
+    }
 
     Scaffold { innerPadding ->
         LazyColumn(
@@ -93,6 +100,28 @@ fun SabiTeachApp(viewModel: SabiTeachViewModel) {
                             color = Color(0xFF52616B)
                         )
 
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            GeneratorTag(
+                                label = "Path: ${generatorModeLabel(uiState.generatorMode)}",
+                                accent = Color(0xFF21543D),
+                                background = Color(0xFFE7F3EA)
+                            )
+                            GeneratorTag(
+                                label = "Status: ${availabilityLabel(uiState.availability)}",
+                                accent = availabilityAccent(uiState.availability),
+                                background = availabilityBackground(uiState.availability)
+                            )
+                        }
+
+                        Text(
+                            text = generatorStatusBody(uiState.generatorMode, uiState.availability),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0xFF52616B)
+                        )
+
                         OutlinedTextField(
                             value = uiState.topic,
                             onValueChange = viewModel::updateTopic,
@@ -117,9 +146,10 @@ fun SabiTeachApp(viewModel: SabiTeachViewModel) {
                         Button(
                             onClick = { scope.launch { viewModel.generateLesson() } },
                             modifier = Modifier.fillMaxWidth(),
+                            enabled = uiState.availability == GeneratorAvailability.Ready,
                             shape = RoundedCornerShape(18.dp)
                         ) {
-                            Text("Generate Lesson")
+                            Text(generateButtonLabel(uiState.generatorMode, uiState.availability))
                         }
 
                         if (uiState.isGenerating) {
@@ -399,14 +429,23 @@ private fun BulletBlock(title: String, items: List<String>) {
 
 @Composable
 private fun Tag(label: String) {
+    GeneratorTag(
+        label = label,
+        accent = Color(0xFF21543D),
+        background = Color(0xFFE7F3EA)
+    )
+}
+
+@Composable
+private fun GeneratorTag(label: String, accent: Color, background: Color) {
     Surface(
-        color = Color(0xFFE7F3EA),
+        color = background,
         shape = RoundedCornerShape(999.dp)
     ) {
         Text(
             text = label,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            color = Color(0xFF21543D),
+            color = accent,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold
         )
@@ -419,5 +458,71 @@ private fun modeLabel(mode: LessonMode): String {
         LessonMode.Handout -> "Handout"
         LessonMode.OralQuiz -> "Oral Quiz"
         LessonMode.BoardWork -> "Board Work"
+    }
+}
+
+private fun generatorModeLabel(mode: GeneratorMode): String {
+    return when (mode) {
+        GeneratorMode.Mock -> "Mock"
+        GeneratorMode.RemoteApi -> "Remote API"
+        GeneratorMode.OnDevice -> "On Device"
+    }
+}
+
+private fun availabilityLabel(availability: GeneratorAvailability): String {
+    return when (availability) {
+        GeneratorAvailability.Ready -> "Ready"
+        GeneratorAvailability.Unavailable -> "Unavailable"
+        GeneratorAvailability.Unsupported -> "Unsupported"
+        GeneratorAvailability.Unknown -> "Checking"
+    }
+}
+
+private fun generatorStatusBody(mode: GeneratorMode, availability: GeneratorAvailability): String {
+    return when (mode) {
+        GeneratorMode.Mock -> "Mock mode runs entirely inside the app so the teacher workflow stays testable without server setup."
+        GeneratorMode.RemoteApi -> when (availability) {
+            GeneratorAvailability.Ready -> "Remote API mode is active. The app will call the configured lesson server from this device."
+            GeneratorAvailability.Unavailable -> "Remote API mode needs SABITEACH_API_BASE_URL before lesson generation can run."
+            GeneratorAvailability.Unsupported -> "Remote API mode is not available in this build."
+            GeneratorAvailability.Unknown -> "Remote API status is still being checked."
+        }
+
+        GeneratorMode.OnDevice -> when (availability) {
+            GeneratorAvailability.Ready -> "On-device generation is available on this device."
+            GeneratorAvailability.Unavailable -> "On-device generation is unavailable on this device right now."
+            GeneratorAvailability.Unsupported -> "On-device generation is still a stub in this build. Use mock or remote mode instead."
+            GeneratorAvailability.Unknown -> "On-device generation support is still being checked."
+        }
+    }
+}
+
+private fun generateButtonLabel(mode: GeneratorMode, availability: GeneratorAvailability): String {
+    return if (availability == GeneratorAvailability.Ready) {
+        "Generate Lesson"
+    } else {
+        when (mode) {
+            GeneratorMode.Mock -> "Generate Lesson"
+            GeneratorMode.RemoteApi -> "Remote Generation Unavailable"
+            GeneratorMode.OnDevice -> "On-Device Generation Unavailable"
+        }
+    }
+}
+
+private fun availabilityAccent(availability: GeneratorAvailability): Color {
+    return when (availability) {
+        GeneratorAvailability.Ready -> Color(0xFF21543D)
+        GeneratorAvailability.Unknown -> Color(0xFF815B00)
+        GeneratorAvailability.Unavailable -> Color(0xFF9A3412)
+        GeneratorAvailability.Unsupported -> Color(0xFF8B1E3F)
+    }
+}
+
+private fun availabilityBackground(availability: GeneratorAvailability): Color {
+    return when (availability) {
+        GeneratorAvailability.Ready -> Color(0xFFE7F3EA)
+        GeneratorAvailability.Unknown -> Color(0xFFF6E8BF)
+        GeneratorAvailability.Unavailable -> Color(0xFFFBE3D5)
+        GeneratorAvailability.Unsupported -> Color(0xFFF7D9E3)
     }
 }

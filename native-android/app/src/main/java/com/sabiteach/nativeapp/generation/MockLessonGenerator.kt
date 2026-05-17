@@ -6,6 +6,8 @@ import java.time.Instant
 import java.util.UUID
 
 class MockLessonGenerator : LessonGenerator {
+    override val mode: GeneratorMode = GeneratorMode.Mock
+
     override suspend fun availability(): GeneratorAvailability = GeneratorAvailability.Ready
 
     override suspend fun generate(request: LessonGenerationRequest): Lesson {

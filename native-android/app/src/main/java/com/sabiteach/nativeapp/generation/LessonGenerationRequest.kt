@@ -7,6 +7,12 @@ data class LessonGenerationRequest(
     val supportLanguage: String = "Efik"
 )
 
+enum class GeneratorMode {
+    Mock,
+    RemoteApi,
+    OnDevice
+}
+
 enum class GeneratorAvailability {
     Ready,
     Unsupported,

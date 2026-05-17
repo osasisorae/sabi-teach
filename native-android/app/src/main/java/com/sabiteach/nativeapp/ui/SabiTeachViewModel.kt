@@ -2,6 +2,8 @@ package com.sabiteach.nativeapp.ui
 
 import com.sabiteach.nativeapp.generation.LessonGenerationRequest
 import com.sabiteach.nativeapp.generation.LessonGenerator
+import com.sabiteach.nativeapp.generation.GeneratorAvailability
+import com.sabiteach.nativeapp.generation.GeneratorMode
 import com.sabiteach.nativeapp.model.Lesson
 import com.sabiteach.nativeapp.model.LessonMode
 import com.sabiteach.nativeapp.storage.LessonStore
@@ -15,17 +17,39 @@ class SabiTeachViewModel(
     private val lessonStore: LessonStore
 ) {
     private val _uiState = MutableStateFlow(
-        SabiTeachUiState(savedLessons = lessonStore.loadLessons())
+        SabiTeachUiState(
+            savedLessons = lessonStore.loadLessons(),
+            generatorMode = generator.mode
+        )
     )
     val uiState: StateFlow<SabiTeachUiState> = _uiState.asStateFlow()
 
     suspend fun refreshAvailability() {
         val availability = generator.availability()
-        _uiState.update { it.copy(availability = availability) }
+        _uiState.update { it.copy(generatorMode = generator.mode, availability = availability) }
     }
 
     suspend fun generateLesson() {
         val topic = _uiState.value.topic.trim().ifEmpty { "Nouns" }
+        val availability = generator.availability()
+        _uiState.update {
+            it.copy(
+                isGenerating = false,
+                errorMessage = null,
+                generatorMode = generator.mode,
+                availability = availability
+            )
+        }
+
+        if (availability != GeneratorAvailability.Ready) {
+            _uiState.update {
+                it.copy(
+                    errorMessage = availabilityMessage(generator.mode, availability)
+                )
+            }
+            return
+        }
+
         _uiState.update { it.copy(isGenerating = true, errorMessage = null) }
 
         runCatching {
@@ -35,7 +59,8 @@ class SabiTeachViewModel(
                 it.copy(
                     currentLesson = lesson,
                     isGenerating = false,
-                    selectedMode = LessonMode.Teacher
+                    selectedMode = LessonMode.Teacher,
+                    availability = availability
                 )
             }
         }.onFailure { error ->
@@ -77,5 +102,33 @@ class SabiTeachViewModel(
 
     fun openSavedLesson(lesson: Lesson) {
         _uiState.update { it.copy(currentLesson = lesson) }
+    }
+
+    private fun availabilityMessage(
+        mode: GeneratorMode,
+        availability: GeneratorAvailability
+    ): String {
+        return when (mode) {
+            GeneratorMode.Mock -> "Mock generator should always be available in this build."
+            GeneratorMode.RemoteApi -> when (availability) {
+                GeneratorAvailability.Unavailable ->
+                    "Remote API mode is selected, but SABITEACH_API_BASE_URL is missing."
+                GeneratorAvailability.Unsupported ->
+                    "Remote API mode is not supported in this build."
+                GeneratorAvailability.Unknown ->
+                    "Remote API status is still being checked."
+                GeneratorAvailability.Ready -> ""
+            }
+
+            GeneratorMode.OnDevice -> when (availability) {
+                GeneratorAvailability.Unsupported ->
+                    "On-device generation is not wired yet on this build. Use mock or remote mode instead."
+                GeneratorAvailability.Unavailable ->
+                    "On-device generation is unavailable on this device."
+                GeneratorAvailability.Unknown ->
+                    "On-device generation support is still being checked."
+                GeneratorAvailability.Ready -> ""
+            }
+        }
     }
 }
