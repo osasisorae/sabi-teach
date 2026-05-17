@@ -146,7 +146,8 @@ fun SabiTeachApp(viewModel: SabiTeachViewModel) {
                         Button(
                             onClick = { scope.launch { viewModel.generateLesson() } },
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.availability == GeneratorAvailability.Ready,
+                            enabled = uiState.availability == GeneratorAvailability.Ready ||
+                                uiState.availability == GeneratorAvailability.DownloadRequired,
                             shape = RoundedCornerShape(18.dp)
                         ) {
                             Text(generateButtonLabel(uiState.generatorMode, uiState.availability))
@@ -472,6 +473,8 @@ private fun generatorModeLabel(mode: GeneratorMode): String {
 private fun availabilityLabel(availability: GeneratorAvailability): String {
     return when (availability) {
         GeneratorAvailability.Ready -> "Ready"
+        GeneratorAvailability.DownloadRequired -> "Download Required"
+        GeneratorAvailability.Downloading -> "Downloading"
         GeneratorAvailability.Unavailable -> "Unavailable"
         GeneratorAvailability.Unsupported -> "Unsupported"
         GeneratorAvailability.Unknown -> "Checking"
@@ -483,6 +486,8 @@ private fun generatorStatusBody(mode: GeneratorMode, availability: GeneratorAvai
         GeneratorMode.Mock -> "Mock mode runs entirely inside the app so the teacher workflow stays testable without server setup."
         GeneratorMode.RemoteApi -> when (availability) {
             GeneratorAvailability.Ready -> "Remote API mode is active. The app will call the configured lesson server from this device."
+            GeneratorAvailability.DownloadRequired -> "Remote API mode does not require on-device model downloads."
+            GeneratorAvailability.Downloading -> "Remote API mode does not download on-device model assets."
             GeneratorAvailability.Unavailable -> "Remote API mode needs SABITEACH_API_BASE_URL before lesson generation can run."
             GeneratorAvailability.Unsupported -> "Remote API mode is not available in this build."
             GeneratorAvailability.Unknown -> "Remote API status is still being checked."
@@ -490,15 +495,17 @@ private fun generatorStatusBody(mode: GeneratorMode, availability: GeneratorAvai
 
         GeneratorMode.OnDevice -> when (availability) {
             GeneratorAvailability.Ready -> "On-device generation is available on this device."
+            GeneratorAvailability.DownloadRequired -> "This device supports Gemini Nano, but the on-device model still needs to be downloaded."
+            GeneratorAvailability.Downloading -> "Gemini Nano is downloading on this device now."
             GeneratorAvailability.Unavailable -> "On-device generation is unavailable on this device right now."
-            GeneratorAvailability.Unsupported -> "On-device generation is still a stub in this build. Use mock or remote mode instead."
+            GeneratorAvailability.Unsupported -> "On-device generation is not supported in this build."
             GeneratorAvailability.Unknown -> "On-device generation support is still being checked."
         }
     }
 }
 
 private fun generateButtonLabel(mode: GeneratorMode, availability: GeneratorAvailability): String {
-    return if (availability == GeneratorAvailability.Ready) {
+    return if (availability == GeneratorAvailability.Ready || availability == GeneratorAvailability.DownloadRequired) {
         "Generate Lesson"
     } else {
         when (mode) {
@@ -512,6 +519,8 @@ private fun generateButtonLabel(mode: GeneratorMode, availability: GeneratorAvai
 private fun availabilityAccent(availability: GeneratorAvailability): Color {
     return when (availability) {
         GeneratorAvailability.Ready -> Color(0xFF21543D)
+        GeneratorAvailability.DownloadRequired -> Color(0xFF7C4D00)
+        GeneratorAvailability.Downloading -> Color(0xFF0B5CAD)
         GeneratorAvailability.Unknown -> Color(0xFF815B00)
         GeneratorAvailability.Unavailable -> Color(0xFF9A3412)
         GeneratorAvailability.Unsupported -> Color(0xFF8B1E3F)
@@ -521,6 +530,8 @@ private fun availabilityAccent(availability: GeneratorAvailability): Color {
 private fun availabilityBackground(availability: GeneratorAvailability): Color {
     return when (availability) {
         GeneratorAvailability.Ready -> Color(0xFFE7F3EA)
+        GeneratorAvailability.DownloadRequired -> Color(0xFFF8E6BE)
+        GeneratorAvailability.Downloading -> Color(0xFFDCEBFA)
         GeneratorAvailability.Unknown -> Color(0xFFF6E8BF)
         GeneratorAvailability.Unavailable -> Color(0xFFFBE3D5)
         GeneratorAvailability.Unsupported -> Color(0xFFF7D9E3)

@@ -15,6 +15,8 @@ enum class GeneratorMode {
 
 enum class GeneratorAvailability {
     Ready,
+    DownloadRequired,
+    Downloading,
     Unsupported,
     Unavailable,
     Unknown

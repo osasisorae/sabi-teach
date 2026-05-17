@@ -22,13 +22,12 @@ What is here now:
 - a native generation boundary
 - a mock native generator for development
 - a remote API generator that can call the existing lesson server
-- an AICore generator stub where the real ML Kit Prompt API integration will live
+- an AICore-backed generator path using ML Kit Prompt API on supported devices
 
 What is not here yet:
 
-- verified Gradle setup
 - Room storage
-- real AICore prompt execution on device
+- supported physical-device validation for real AICore prompt execution
 
 ## Why The Structure Is Narrow
 
@@ -65,7 +64,7 @@ Today there are three native generation paths:
 
 1. mock generator inside the app
 2. remote API generator hitting the existing laptop server
-3. future on-device AICore path
+3. on-device AICore / Gemini Nano path on supported Android hardware
 
 The current app will use the remote API generator when `SABITEACH_API_BASE_URL` is provided at build time. Otherwise it falls back to the mock generator.
 
@@ -115,6 +114,6 @@ If you do not set an API base URL first, the app still runs, but generation stay
 
 1. Create the Android Studio project in this folder.
 2. Wire the model and teaching-mode files already added here.
-3. Replace the mock generator with the real AICore implementation.
+3. Validate the real AICore implementation on a supported physical device.
 4. Add local lesson persistence.
 5. Test on a supported physical Android device.

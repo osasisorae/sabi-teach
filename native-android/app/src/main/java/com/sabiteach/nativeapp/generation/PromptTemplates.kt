@@ -6,6 +6,7 @@ object PromptTemplates {
             You are generating one classroom-ready lesson for a teacher in Nigeria.
 
             Return valid JSON only.
+            Do not use markdown fences.
 
             Requirements:
             - Class level: ${request.classLevel}

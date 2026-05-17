@@ -1,10 +1,8 @@
 package com.sabiteach.nativeapp.generation
 
 import com.sabiteach.nativeapp.model.Lesson
-import com.sabiteach.nativeapp.model.SupportExplanation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -56,59 +54,9 @@ class ApiLessonGenerator(
                 error("Lesson API request failed: $responseCode ${responseText.ifBlank { "Unknown error" }}")
             }
 
-            return@withContext parseLessonResponse(responseText)
+            return@withContext LessonJsonParser.parseApiLessonResponse(responseText)
         } finally {
             connection.disconnect()
-        }
-    }
-
-    private fun parseLessonResponse(responseText: String): Lesson {
-        val root = JSONObject(responseText)
-        val lesson = root.optJSONObject("lesson")
-            ?: error("Lesson API response did not include a lesson object.")
-
-        return Lesson(
-            id = lesson.optString("id"),
-            lessonTitle = lesson.optString("lesson_title"),
-            classLevel = lesson.optString("class_level"),
-            subject = lesson.optString("subject"),
-            supportLanguage = lesson.optString("support_language"),
-            topic = lesson.optString("topic"),
-            learningObjective = lesson.optString("learning_objective"),
-            teacherExplanationEnglish = lesson.optString("teacher_explanation_english"),
-            supportExplanation = parseSupportExplanation(lesson.optJSONObject("support_explanation")),
-            examples = parseStringArray(lesson.optJSONArray("examples")),
-            classActivity = lesson.optString("class_activity"),
-            quizQuestions = parseStringArray(lesson.optJSONArray("quiz_questions")),
-            answerKey = parseStringArray(lesson.optJSONArray("answer_key")),
-            takeHomeRevision = lesson.optString("take_home_revision"),
-            createdAt = lesson.optString("created_at")
-        ).also { parsed ->
-            require(parsed.lessonTitle.isNotBlank()) { "Lesson API returned an empty lesson title." }
-            require(parsed.quizQuestions.isNotEmpty()) { "Lesson API returned no quiz questions." }
-            require(parsed.answerKey.isNotEmpty()) { "Lesson API returned no answer key." }
-        }
-    }
-
-    private fun parseSupportExplanation(candidate: JSONObject?): SupportExplanation {
-        return SupportExplanation(
-            language = candidate?.optString("language").orEmpty(),
-            text = candidate?.optString("text").orEmpty()
-        )
-    }
-
-    private fun parseStringArray(items: JSONArray?): List<String> {
-        if (items == null) {
-            return emptyList()
-        }
-
-        return buildList(items.length()) {
-            for (index in 0 until items.length()) {
-                val value = items.optString(index).trim()
-                if (value.isNotEmpty()) {
-                    add(value)
-                }
-            }
         }
     }
 

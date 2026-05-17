@@ -35,7 +35,7 @@ The offline claim we can safely make today is narrower:
 
 ## Native Android Status
 
-The native Android app is now a scaffold, not a finished replacement.
+The native Android app is now a working transition build, not a finished replacement.
 
 What exists already:
 
@@ -44,14 +44,16 @@ What exists already:
 - Compose UI for generate -> review -> save
 - mock generator
 - remote API generator that can call the existing lesson server
-- AICore generator stub for future on-device integration
+- local lesson persistence across app restarts
+- verified Gradle build and emulator run path
+- real ML Kit Prompt API / AICore integration path for supported devices
+- clear generator availability states in the UI
 
 What does not exist yet:
 
-- verified Gradle sync and run path
-- persistent local lesson storage
-- real on-device prompt execution
-- device capability handling for supported vs unsupported Android phones
+- proven successful on-device lesson generation on a supported physical phone
+- prompt/output hardening for real classroom-quality results on device
+- physical-device validation of download and warmup behavior
 
 ## Verified Machine State
 
@@ -67,10 +69,10 @@ This means the native Android branch should currently be treated as **Android St
 
 ## Immediate Priorities
 
-1. Finish and commit the upgraded Expo teaching modes so the proven workflow is clean.
-2. Open `native-android/` in Android Studio and fix the first Gradle sync or build failure.
-3. Add real local persistence to native Android so saved lessons survive app restarts.
-4. Replace the AICore stub with a real supported on-device generation path, or expose a clear unavailable state on unsupported devices.
+1. Validate the AICore path on a supported physical Android device.
+2. Tune the on-device prompt/output path if the single-call lesson schema proves too large or inconsistent.
+3. Keep unsupported-device behavior explicit and graceful.
+4. Only then tighten the public offline claim.
 
 ## Resume Rule
 

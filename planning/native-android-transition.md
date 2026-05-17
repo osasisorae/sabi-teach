@@ -65,7 +65,7 @@ Suggested layers:
 - `storage`
 - `ui`
 
-## Current Scaffold State
+## Current Native State
 
 What exists in `native-android/` right now:
 
@@ -74,14 +74,16 @@ What exists in `native-android/` right now:
 - Compose UI for generate -> review -> save
 - mock generator
 - remote API generator
-- AICore generator stub
+- local lesson persistence
+- verified Gradle build path
+- real ML Kit Prompt API / AICore integration path
+- clear `mock` / `remote` / `on-device unavailable` states in the UI
 
 What is still missing:
 
-- verified Gradle sync/build
-- persistent local lesson storage
-- reopen-saved-lessons flow after restart
-- real AICore or ML Kit prompt execution
+- successful on-device lesson generation on supported physical hardware
+- prompt/output tuning for reliable structured lesson JSON
+- validation of model download/warmup on a real supported device
 
 ## Verified Local Machine State
 
@@ -93,16 +95,16 @@ Verified from the shell:
 - `adb` is not on PATH
 - `sdkmanager` is not on PATH
 
-So this phase is still a scaffold and environment-validation pass, not a proven native build yet.
+So this phase is no longer just a scaffold. It is a buildable native app with a real on-device integration path, but not yet a proven supported-device result.
 
 ## Immediate Build Plan
 
 1. Open `native-android/` in Android Studio.
 2. Let Gradle sync run with the embedded JDK.
-3. Report and fix the first sync/build error.
-4. Add local persistence so saved lessons survive restart.
-5. Validate the remote API generator on a physical Android device.
-6. Replace the AICore stub with a real on-device runtime on supported hardware.
+3. Run the `aicore` mode on a supported physical Android device.
+4. Confirm model availability, download, and warmup behavior.
+5. Generate a real lesson end to end and validate the JSON quality.
+6. Tighten unsupported-device fallback messaging only after the supported-device path is proven.
 
 ## Non-Goals Right Now
 

@@ -41,7 +41,10 @@ class SabiTeachViewModel(
             )
         }
 
-        if (availability != GeneratorAvailability.Ready) {
+        val canGenerate = availability == GeneratorAvailability.Ready ||
+            availability == GeneratorAvailability.DownloadRequired
+
+        if (!canGenerate) {
             _uiState.update {
                 it.copy(
                     errorMessage = availabilityMessage(generator.mode, availability)
@@ -111,6 +114,10 @@ class SabiTeachViewModel(
         return when (mode) {
             GeneratorMode.Mock -> "Mock generator should always be available in this build."
             GeneratorMode.RemoteApi -> when (availability) {
+                GeneratorAvailability.DownloadRequired ->
+                    "Remote API mode does not use downloadable model assets."
+                GeneratorAvailability.Downloading ->
+                    "Remote API mode does not download model assets on device."
                 GeneratorAvailability.Unavailable ->
                     "Remote API mode is selected, but SABITEACH_API_BASE_URL is missing."
                 GeneratorAvailability.Unsupported ->
@@ -121,8 +128,12 @@ class SabiTeachViewModel(
             }
 
             GeneratorMode.OnDevice -> when (availability) {
+                GeneratorAvailability.DownloadRequired ->
+                    "On-device generation needs Gemini Nano to download first. Keep the device online, then generate again."
+                GeneratorAvailability.Downloading ->
+                    "Gemini Nano is downloading on this device. Wait for the download to finish, then try again."
                 GeneratorAvailability.Unsupported ->
-                    "On-device generation is not wired yet on this build. Use mock or remote mode instead."
+                    "On-device generation is not supported in this build."
                 GeneratorAvailability.Unavailable ->
                     "On-device generation is unavailable on this device."
                 GeneratorAvailability.Unknown ->

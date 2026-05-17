@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
         return when (mode) {
             GeneratorMode.Mock -> MockLessonGenerator()
             GeneratorMode.RemoteApi -> ApiLessonGenerator(baseUrl = baseUrl)
-            GeneratorMode.OnDevice -> AicoreLessonGenerator()
+            GeneratorMode.OnDevice -> AicoreLessonGenerator(applicationContext)
         }
     }
 }

@@ -37,25 +37,26 @@ Current open work:
 
 ### Step 2: Verify Native Android Build
 
-Do this in Android Studio first:
+This is now completed at the basic level:
 
-- sync Gradle
-- use the embedded JDK if needed
-- install missing SDK components if prompted
-- report the first real sync/build error and fix from there
+- native Android builds with Gradle
+- emulator run path is verified
+- generator availability states are rendered in the UI
 
 ### Step 3: Reach Feature Parity In Native
 
-Native Android still needs:
+Native Android now has:
 
-- real local lesson persistence
+- local lesson persistence
 - reopened saved lessons after app restart
 - the same teaching modes already proved in Expo
 - clearer generator availability and fallback messaging
 
+The remaining gap in parity is the supported-device on-device path itself.
+
 ### Step 4: Replace Scaffolded On-Device Generation
 
-The AICore path is still a stub.
+The AICore path is now wired to ML Kit Prompt API, but it still must be proven on supported hardware.
 
 Before claiming true offline generation, we must have:
 
@@ -78,7 +79,7 @@ The public story should stay truthful:
 - verify native Android sync/build
 - add native persistence
 - validate remote API mode on a phone
-- wire real on-device generation
+- validate real on-device generation on supported hardware
 - test on supported Android hardware
 - update demo assets and writeup
 
