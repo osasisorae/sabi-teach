@@ -257,6 +257,12 @@ private fun GeneratedLessonCard(
                 fontWeight = FontWeight.Bold
             )
 
+            Text(
+                text = "Topic: ${lesson.topic}",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color(0xFF52616B)
+            )
+
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -382,7 +388,7 @@ private fun SavedLessonRow(lesson: Lesson, onOpen: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "${lesson.classLevel} • ${lesson.subject} • ${lesson.supportLanguage}",
+                    text = "${lesson.classLevel} • ${lesson.subject} • ${lesson.supportLanguage} • ${lesson.topic}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xFF52616B)
                 )
